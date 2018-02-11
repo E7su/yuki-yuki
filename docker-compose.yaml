@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  yuki:
+    restart: always
+    network_mode: "bridge"
+    image: yuki:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    ports:
+#      - 5000:5000
+    volumes:
+      -  /home/etsu/Projects/yuki:/app
+      -  /home/etsu/Projects/yuki/conf:/conf
+      -  /home/etsu/Projects/yuki/db:/db
+    command: ["python3.6", "/app/server.py"]
+    links:
+      - "mysql:mysql"
+
+  mysql:
+    restart: always
+    network_mode: "bridge"
+    image: mysql:latest
+    build:
+      context: .
+      dockerfile: MYSQL_Dockerfile
+    volumes:
+      - /home/etsu/Projects/yuki/db/:/db
+      - /home/etsu/Projects/yuki/mysql:/var/lib/mysql

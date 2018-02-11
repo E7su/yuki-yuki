@@ -1,8 +1,10 @@
 FROM centos:centos6
 LABEL maintainer Polina Azarova <etsu4296@gmail.com>
 
+ADD requirements.txt /app/requirements.txt
+
 # install dependencies
-RUN yum update && yum install -y gcc zlib-devel openssl-devel mysql-devel
+RUN yum update -y && yum install -y gcc zlib-devel openssl-devel mysql-devel
 
 # install python3
 RUN mkdir /build && cd /build && \
@@ -14,6 +16,7 @@ RUN mkdir /build && cd /build && \
 
 # get pip alongside pip3; is this better than a symlink?
 RUN pip3 install --upgrade pip
+RUN pip3 install -r /app/requirements.txt
 RUN python3.5 -m pip install mysqlclient
 
 WORKDIR /app
